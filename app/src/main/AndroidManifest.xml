@@ -3,9 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <queries>
+        <!-- Support for finding browsers -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
         <package android:name="app.revanced.android.youtube" />
         <package android:name="com.google.android.youtube" />
-        <package android:name="com.vivaldi.browser" />
     </queries>
 
     <application
@@ -18,17 +23,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Redirector">
 
+        <!-- Settings UI -->
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="true"
+            android:label="Redirector Settings">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Redirect Logic (Hidden) -->
         <activity
             android:name=".RedirectActivity"
             android:exported="true"
             android:theme="@android:style/Theme.NoDisplay">
             
-            <!-- Handle standard web links with high priority -->
             <intent-filter android:priority="999">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data android:scheme="http" />
                 <data android:scheme="https" />
                 
@@ -37,8 +52,6 @@
                 <data android:host="m.youtube.com" />
                 <data android:host="music.youtube.com" />
                 <data android:host="youtu.be" />
-
-                <!-- Add common YouTube path patterns -->
                 <data android:pathPrefix="/watch" />
                 <data android:pathPrefix="/v/" />
                 <data android:pathPrefix="/embed/" />
@@ -46,7 +59,6 @@
                 <data android:pathPrefix="/live" />
             </intent-filter>
 
-            <!-- Browser trick: Make the system think this can be a default browser -->
             <intent-filter android:priority="999">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -56,17 +68,11 @@
                 <data android:scheme="https" />
             </intent-filter>
 
-            <!-- Handle YouTube's custom URI scheme -->
             <intent-filter android:priority="999">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="vnd.youtube" />
-            </intent-filter>
-            
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
